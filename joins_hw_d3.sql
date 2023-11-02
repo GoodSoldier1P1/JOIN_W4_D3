@@ -39,15 +39,21 @@ WHERE amount > 175;
 -- amount had to be in an aggregate. So I'm not sure if this is what we were meant to do or if I'm missing something.
 
 -- 4. List all customers that live in Nepal (use the city table)
-SELECT city
+SELECT country_id
 FROM city
-WHERE city = 'Nepal';
+WHERE country_id IN(
+    SELECT country_id
+    FROM country
+    GROUP BY country_id
+    HAVING country = 'Nepal'
+);
+
 
 SELECT *
-FROM city;
-
+FROM country;
 -- Reasoning
---There is no data for Nepal. I double checked this with the select all and filtered the city for Nepal
+--I initially checked for city, not realizing Nepal is a country. Fixed this issue...
+--And searched for customers with the ID in nepal.
 
 -- 5. Which staff member had the most transactions?
 SELECT staff_id, COUNT(amount)
